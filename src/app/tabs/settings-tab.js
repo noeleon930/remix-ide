@@ -1,6 +1,7 @@
 /* global Option, Worker */
 var $ = require('jquery')
 var yo = require('yo-yo')
+var csjs = require('csjs-inject')
 var request = require('request')
 var QueryParams = require('../../lib/query-params')
 var remixLib = require('remix-lib')
@@ -10,9 +11,9 @@ var helper = require('../../lib/helper')
 var modal = require('../ui/modal-dialog-custom')
 var tooltip = require('../ui/tooltip')
 
-var css = require('./styles/settings-tab-styles')
+var styles = require('../../ui/styles-guide/theme-chooser').chooser()
 
-function SettingsTab (appAPI = {}, appEvents = {}, opts = {}) {
+module.exports = function SettingsTab (appAPI = {}, appEvents = {}, opts = {}) {
   var queryParams = new QueryParams()
 
   var optionVM = yo`<input id="alwaysUseVM" type="checkbox">`
@@ -99,7 +100,7 @@ function SettingsTab (appAPI = {}, appEvents = {}, opts = {}) {
         <a target="_blank" href="https://www.npmjs.com/package/remix-ide">https://www.npmjs.com/package/remix-ide</a>
         <pre class=${css.remixdinstallation}>npm install remix-ide -g</pre>
         <div class="${css.crow}">
-          as an electron app: 
+          as an electron app:
         </div>
         <a target="_blank" href="https://github.com/horizon-games/remix-app">https://github.com/horizon-games/remix-app</a>
       </div>
@@ -261,4 +262,77 @@ function loadVersion (version, queryParams, compiler, el) {
   }
 }
 
-module.exports = SettingsTab
+const css = = csjs`
+  .settingsTabView {
+    padding: 2%;
+    display: flex;
+  }
+  .info {
+    ${styles.rightPanel.settingsTab.box_SolidityVersionInfo}
+    margin-bottom: 1em;
+    word-break: break-word;
+  }
+  .title {
+    font-size: 1.1em;
+    font-weight: bold;
+    margin-bottom: 1em;
+  }
+  .crow {
+    display: flex;
+    overflow: auto;
+    clear: both;
+    padding: .2em;
+  }
+  .checkboxText {
+    font-weight: normal;
+  }
+  .crow label {
+    cursor:pointer;
+  }
+  .crowNoFlex {
+    overflow: auto;
+    clear: both;
+  }
+  .attention {
+    margin-bottom: 1em;
+    padding: .5em;
+    font-weight: bold;
+  }
+  .select {
+    font-weight: bold;
+    margin-top: 1em;
+    ${styles.rightPanel.settingsTab.dropdown_SelectCompiler}
+  }
+  .heading {
+    margin-bottom: 0;
+  }
+  .explaination {
+    margin-top: 3px;
+    margin-bottom: 3px;
+  }
+  input {
+    margin-right: 5px;
+    cursor: pointer;
+  }
+  input[type=radio] {
+    margin-top: 2px;
+  }
+  .pluginTextArea {
+    font-family: unset;
+  }
+  .pluginLoad {
+    vertical-align: top;
+  }
+  i.warnIt {
+    color: ${styles.appProperties.warningText_Color};
+  }
+  .icon {
+    margin-right: .5em;
+  }
+  .remixdinstallation {
+    padding: 3px;
+    border-radius: 2px;
+    margin-left: 5px;
+  }
+}
+`
